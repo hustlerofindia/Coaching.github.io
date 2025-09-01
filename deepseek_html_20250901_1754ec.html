@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaching Institute Management System - Pricing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .summary-sticky {
+            position: sticky;
+            top: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-blue-600 text-white py-6">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">Coaching Institute Management System</h1>
+            <p class="text-blue-100">Customize your platform with the features you need</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Features Section -->
+            <div class="w-full lg:w-2/3">
+                <h2 class="text-2xl font-semibold mb-6">Select Features</h2>
+                
+                <!-- Core Features -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-medium text-blue-700 mb-4 border-b pb-2">Core Features (Mandatory)</h3>
+                    <div class="grid md:grid-cols-2 gap-4" id="core-features">
+                        <!-- Core features will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Optional Add-ons -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-medium text-blue-700 mb-4 border-b pb-2">Optional Add-ons</h3>
+                    <div class="grid md:grid-cols-2 gap-4" id="optional-features">
+                        <!-- Optional features will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Mobile Applications -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-medium text-blue-700 mb-4 border-b pb-2">Mobile Applications</h3>
+                    <div class="grid md:grid-cols-2 gap-4" id="mobile-features">
+                        <!-- Mobile features will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Deployment & Training -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-medium text-blue-700 mb-4 border-b pb-2">Deployment & Training</h3>
+                    <div class="grid md:grid-cols-2 gap-4" id="deployment-features">
+                        <!-- Deployment features will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="w-full lg:w-1/3">
+                <div class="bg-white rounded-lg shadow-lg p-6 summary-sticky">
+                    <h2 class="text-xl font-semibold mb-4">Your Custom Package</h2>
+                    <div id="selected-items" class="mb-4">
+                        <!-- Selected items will be populated here -->
+                    </div>
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between font-semibold text-lg">
+                            <span>Total One-Time Cost:</span>
+                            <span id="total-cost">₹0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Monthly Cost Estimate -->
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <h3 class="font-medium text-blue-700 mb-2">Estimated Monthly Running Costs</h3>
+                        <p class="text-sm text-gray-600">(To be paid directly by client)</p>
+                        <ul class="text-sm mt-2 space-y-1" id="monthly-costs">
+                            <li>Server Hosting: ₹1,500 – ₹3,000</li>
+                            <li>Video Storage & CDN: ₹3,000 – ₹10,000</li>
+                            <li>Emails/SMS/WhatsApp: ₹500 – ₹2,000</li>
+                            <li>Domain & SSL: ~₹200</li>
+                            <li>Payment Gateway: 2% per transaction</li>
+                        </ul>
+                        <div class="mt-3 font-medium">
+                            Estimated Total: ₹6,000 – ₹15,000/month
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-6 space-y-3">
+                        <button id="download-pdf" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download Quote as PDF
+                        </button>
+                        <button id="reset-selection" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg">
+                            Reset Selection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2023 Coaching Institute Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Feature data
+        const features = {
+            core: [
+                { id: 'student-mgmt', name: 'Student Management', description: 'Add, edit, batch management, profiles', price: 10000, mandatory: true },
+                { id: 'attendance', name: 'Attendance System', description: 'Manual + QR based marking', price: 10000, mandatory: true },
+                { id: 'fee-mgmt', name: 'Fee Management + Online Payment', description: 'Razorpay integration, receipts, fee status', price: 15000, mandatory: true },
+                { id: 'course-pricing', name: 'Course & Pricing', description: 'Create courses, set price/duration', price: 10000, mandatory: true },
+                { id: 'online-classes', name: 'Online Classes', description: 'Zoom/Jitsi integration, schedule, join with 1 click', price: 10000, mandatory: true },
+                { id: 'test-system', name: 'Test System', description: 'MCQ (auto-check), Subjective (manual check), Results', price: 15000, mandatory: true },
+                { id: 'performance', name: 'Performance Tracking', description: 'Student-wise analytics, progress reports', price: 10000, mandatory: true },
+                { id: 'notifications', name: 'Notifications', description: 'In-app + email alerts', price: 5000, mandatory: true },
+                { id: 'admin-dashboard', name: 'Admin Dashboard', description: 'Overview of attendance, fees, performance', price: 5000, mandatory: true }
+            ],
+            optional: [
+                { id: 'video-streaming', name: 'Recorded Video Streaming', description: 'Secure streaming (HLS + signed URL)', price: 10000, monthlyCost: { min: 3000, max: 10000 } },
+                { id: 'offline-downloads', name: 'Offline Video Downloads', description: 'Encrypted, expiry, device-lock (Mobile only)', price: 15000 },
+                { id: 'watermarking', name: 'Video Watermarking', description: 'Overlay student name/ID on video', price: 5000 },
+                { id: 'study-material', name: 'Notes & Study Material', description: 'Upload PDF/Docs, download by students', price: 5000 },
+                { id: 'parent-login', name: 'Parent Login', description: 'Parents can view attendance, fees, performance', price: 7000 },
+                { id: 'advanced-analytics', name: 'Advanced Analytics', description: 'Watch-time tracking, weak topic analysis', price: 8000 },
+                { id: 'certificates', name: 'Certificates', description: 'Auto-generate completion certificates', price: 5000 },
+                { id: 'doubt-forum', name: 'Doubt Discussion Forum', description: 'Chat per class/topic', price: 10000 },
+                { id: 'multidevice', name: 'Multi-device Control', description: 'Restrict concurrent logins', price: 5000 },
+                { id: 'proctoring', name: 'Proctoring for Tests', description: 'Camera/mic monitoring & cheating flags', price: 10000 }
+            ],
+            mobile: [
+                { id: 'android-app', name: 'Android App', description: 'Fully functional, Play Store publish', price: 15000 },
+                { id: 'ios-app', name: 'iOS App', description: 'Fully functional, App Store publish', price: 20000 }
+            ],
+            deployment: [
+                { id: 'deployment', name: 'Deployment', description: 'AWS/DigitalOcean, domain, SSL, backups', price: 7000 },
+                { id: 'training', name: 'Training & Handover', description: '3 sessions for admin & teachers', price: 3000 }
+            ]
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFeatures();
+            updateSummary();
+            
+            // Event listeners
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateSummary);
+            });
+            
+            document.getElementById('reset-selection').addEventListener('click', resetSelection);
+            document.getElementById('download-pdf').addEventListener('click', downloadPDF);
+        });
+
+        // Render all features
+        function renderFeatures() {
+            renderFeatureCategory('core', 'core-features', true);
+            renderFeatureCategory('optional', 'optional-features', false);
+            renderFeatureCategory('mobile', 'mobile-features', false);
+            renderFeatureCategory('deployment', 'deployment-features', false);
+        }
+
+        // Render a feature category
+        function renderFeatureCategory(category, containerId, isMandatory) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            features[category].forEach(feature => {
+                const card = document.createElement('div');
+                card.className = 'feature-card bg-white rounded-lg shadow p-4 transition-all duration-200';
+                
+                const isChecked = isMandatory ? 'checked' : '';
+                const isDisabled = isMandatory ? 'disabled' : '';
+                
+                card.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="${feature.id}" type="checkbox" ${isChecked} ${isDisabled} 
+                                class="h-4 w-4 text-blue-600 border-gray-300 rounded" 
+                                data-name="${feature.name}" 
+                                data-price="${feature.price}" 
+                                data-id="${feature.id}">
+                        </div>
+                        <div class="ml-3">
+                            <label for="${feature.id}" class="font-medium text-gray-700">${feature.name}</label>
+                            <p class="text-sm text-gray-500 mt-1">${feature.description}</p>
+                            <p class="text-blue-600 font-medium mt-2">₹${feature.price.toLocaleString()}</p>
+                            ${feature.monthlyCost ? 
+                                `<p class="text-xs text-gray-500 mt-1">Monthly cost: ₹${feature.monthlyCost.min.toLocaleString()} - ₹${feature.monthlyCost.max.toLocaleString()}</p>` : 
+                                ''}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Update the summary section
+        function updateSummary() {
+            const selectedItemsContainer = document.getElementById('selected-items');
+            selectedItemsContainer.innerHTML = '';
+            
+            let total = 0;
+            let selectedCount = 0;
+            
+            // Process all checkboxes
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                const name = checkbox.getAttribute('data-name');
+                const price = parseInt(checkbox.getAttribute('data-price'));
+                const id = checkbox.getAttribute('data-id');
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between py-2 border-b';
+                itemElement.innerHTML = `
+                    <span>${name}</span>
+                    <span class="font-medium">₹${price.toLocaleString()}</span>
+                `;
+                
+                selectedItemsContainer.appendChild(itemElement);
+                total += price;
+                selectedCount++;
+            });
+            
+            // Update total
+            document.getElementById('total-cost').textContent = `₹${total.toLocaleString()}`;
+            
+            // Show message if no optional features selected
+            if (selectedCount === features.core.length) {
+                const message = document.createElement('p');
+                message.className = 'text-gray-500 text-sm italic';
+                message.textContent = 'Select optional features above to add to your package';
+                selectedItemsContainer.appendChild(message);
+            }
+        }
+
+        // Reset selection to only mandatory features
+        function resetSelection() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                const isMandatory = checkbox.hasAttribute('disabled');
+                checkbox.checked = isMandatory;
+            });
+            updateSummary();
+        }
+
+        // Download PDF function
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add content to PDF
+            doc.setFontSize(22);
+            doc.text('Coaching Institute Management System - Quote', 20, 20);
+            doc.setFontSize(16);
+            doc.text('Custom Package Summary', 20, 30);
+            
+            doc.setFontSize(12);
+            let y = 40;
+            
+            // Add selected features
+            doc.setFont(undefined, 'bold');
+            doc.text('Selected Features:', 20, y);
+            y += 7;
+            
+            doc.setFont(undefined, 'normal');
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                const name = checkbox.getAttribute('data-name');
+                const price = parseInt(checkbox.getAttribute('data-price'));
+                
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+                
+                doc.text(`${name}: ₹${price.toLocaleString()}`, 20, y);
+                y += 7;
+            });
+            
+            y += 5;
+            if (y > 270) {
+                doc.addPage();
+                y = 20;
+            }
+            
+            // Add total
+            doc.setFont(undefined, 'bold');
+            doc.text(`Total One-Time Cost: ₹${document.getElementById('total-cost').textContent.replace('₹', '')}`, 20, y);
+            y += 10;
+            
+            // Add monthly costs
+            doc.text('Estimated Monthly Running Costs:', 20, y);
+            y += 7;
+            doc.setFont(undefined, 'normal');
+            doc.text('Server Hosting: ₹1,500 – ₹3,000', 20, y);
+            y += 7;
+            doc.text('Video Storage & CDN: ₹3,000 – ₹10,000', 20, y);
+            y += 7;
+            doc.text('Emails/SMS/WhatsApp: ₹500 – ₹2,000', 20, y);
+            y += 7;
+            doc.text('Domain & SSL: ~₹200', 20, y);
+            y += 7;
+            doc.text('Payment Gateway: 2% per transaction', 20, y);
+            y += 7;
+            doc.setFont(undefined, 'bold');
+            doc.text('Estimated Total: ₹6,000 – ₹15,000/month', 20, y);
+            
+            // Save the PDF
+            doc.save('Coaching-System-Quote.pdf');
+        }
+    </script>
+</body>
+</html>
